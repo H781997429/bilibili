@@ -7,6 +7,8 @@
 #include "key.h"
 #include "bsp_usart.h"
 
+u8 mode=0;
+extern u8 Key_tmp;
 extern void Menu_Init(void);
 
 int main()
@@ -22,7 +24,8 @@ int main()
 	printf("\nInit end! ");
 	while(1)
 	{
-		mode1();
+		mode_value();
+		
 	}
 }
 

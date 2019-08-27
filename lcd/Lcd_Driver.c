@@ -506,7 +506,7 @@ void DisplayButtonUp(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2)
     Gui_DrawLine(x2  ,y1  ,x2,y2, GRAY2); //V
 }
 
-//左上x坐标，左上y坐标，文字颜色，底色，汉字
+//左上x坐标，左上y坐标，文字颜色，底色，数字
 void Gui_DrawFont_GBK16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s)
 {
 	unsigned char i,j;
