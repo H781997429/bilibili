@@ -31,6 +31,7 @@
 #include "stm32f4xx_it.h"
 #include "tim.h"
 #include "key.h"
+#include "mode.h"
 extern void TimingDelay_Decrement(void);
 
 /** @addtogroup Template_Project
@@ -160,6 +161,16 @@ void  GENERAL_TIM_IRQHandler (void)
 		TIM_ClearITPendingBit(GENERAL_TIM , TIM_IT_Update);  		 
 	}		 	
 }
+void  FIRE_TIM_IRQHandler (void)
+{
+	if ( TIM_GetITStatus( FIRE_TIM, TIM_IT_Update) != RESET ) 
+	{	
+		fire_mode();
+		TIM_ClearITPendingBit(FIRE_TIM , TIM_IT_Update);  		 
+	}		 	
+}
+
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
