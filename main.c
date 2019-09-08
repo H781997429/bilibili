@@ -6,6 +6,7 @@
 #include "lcd_display.h"
 #include "key.h"
 #include "bsp_usart.h"
+#include "relay.h"
 
 u8 mode=0;
 extern u8 Key_tmp;
@@ -19,6 +20,7 @@ int main()
 	printf("\nInit beginning! ---->>>>");
 	PWM_Configuration();		
 	Menu_Init();
+	RELAY_GPIO_Config();
 	KEY_GPIO_ConfigAndDetect();
 	TIMx_Configuration();
 	printf("\nInit end! ");

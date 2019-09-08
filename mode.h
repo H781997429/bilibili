@@ -7,7 +7,7 @@
 #include "mode.h"
 #include "lcd_driver.h"
 #include "lcd_display.h"
-#define fire_delay  20
+#define fire_delay  10
 
 void mode1(void);
 void mode2(void);

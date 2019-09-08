@@ -1,10 +1,10 @@
 #include "mode.h"
-#include "key.h"
-
+#include "key.h "
+#include "relay.h"
 extern u8 mode;
 extern u8 Key_tmp;
 u8 state = 0;
-u8 time = 30,fire_time = 0;
+u16 time = 200,fire_time = 0;
 static u8 refresh = 0;
 
 
@@ -30,8 +30,9 @@ void mode_value(void)
 		state = 2;
 		refresh = 1;
 		Lcd_Clear(GRAY0);
-		TIM_Cmd(FIRE_TIM, ENABLE);//开定时器
 		Key_tmp  = 0;
+		TIM_Cmd(FIRE_TIM, ENABLE);//开定时器
+		
 	}
 	switch(mode)
 		{
@@ -83,9 +84,9 @@ void mode1(void)
 	if(refresh == 1 && state ==1)
 	{
 		Gui_DrawFont_GBK16(2,5,BLUE,GRAY0,"俯仰角");
-		Gui_DrawFont_Num32(20,22, BLUE, GRAY0, (90+tmpy)/100);
-		Gui_DrawFont_Num32(50,22, BLUE, GRAY0, (90+tmpy)%100/10);
-		Gui_DrawFont_Num32(80,22, BLUE, GRAY0, (90+tmpy)%10);
+		Gui_DrawFont_Num32(20,22, BLUE, GRAY0, (Init_angle+tmpy)/100);
+		Gui_DrawFont_Num32(50,22, BLUE, GRAY0, (Init_angle+tmpy)%100/10);
+		Gui_DrawFont_Num32(80,22, BLUE, GRAY0, (Init_angle+tmpy)%10);
 		Gui_DrawFont_GBK16(2,58,RED,GRAY0,"偏离角");
 		Gui_DrawFont_Num32(20,74,RED,GRAY0,(90+tmpx)/100);
 		Gui_DrawFont_Num32(50,74,RED,GRAY0,(90+tmpx)%100/10);
@@ -100,7 +101,7 @@ void mode1(void)
 		refresh = 0;
 	}
 	Xout(90+tmpx);
-	Yout(90-tmpy);
+	Yout(Init_angle+tmpy);
 	
 }
 /*************************模式二，角度，距离模式*****************/
@@ -137,8 +138,8 @@ void fire_mode(void)
 	fire_time++;
 	if(fire_time < time)
 	{
-		//关放电继电器
-		//开充电继电器,
+		RELAY_OUT_OFF;//关放电继电器
+		RELAY_IN_ON//开充电继电器,
 		Gui_DrawFont_GBK16(16,22,RED,GRAY0,"充电中");
 		Gui_DrawFont_Num32(2,123,RED,GRAY0,(time - fire_time)/100);
 		Gui_DrawFont_Num32(30,123,RED,GRAY0,(time - fire_time)%100/10);
@@ -147,7 +148,7 @@ void fire_mode(void)
 	}
 	if(fire_time >= time && fire_time < (time + fire_delay))
 	{
-		//关充电继电器
+		RELAY_IN_OFF;//关充电继电器
 
 		Gui_DrawFont_GBK16(16,22,RED,GRAY0,"即将发射");
 		Gui_DrawFont_Num32(2,123,RED,GRAY0,((time + fire_delay) - fire_time)/100);
@@ -157,14 +158,14 @@ void fire_mode(void)
 	}
 	if(fire_time == (time + fire_delay))
 	{
-		//开放电继电器
+		RELAY_OUT_ON;//开放电继电器
 		Lcd_Clear(BLUE);
 		Gui_DrawFont_GBK16(16,22,RED,BLUE,"发射中");
 	}
 	if(fire_time == (time + fire_delay + 10))
 	{
 		
-		//关放电继电器
+		RELAY_OUT_OFF//关放电继电器
 		TIM_Cmd(FIRE_TIM, DISABLE);//关闭定时器
 		Lcd_Clear(GRAY0);
 		Gui_DrawFont_GBK16(16,22,RED,GRAY0,"发射结束");

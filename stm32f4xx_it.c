@@ -32,6 +32,7 @@
 #include "tim.h"
 #include "key.h"
 #include "mode.h"
+#include "relay.h"
 extern void TimingDelay_Decrement(void);
 
 /** @addtogroup Template_Project
@@ -166,6 +167,8 @@ void  FIRE_TIM_IRQHandler (void)
 	if ( TIM_GetITStatus( FIRE_TIM, TIM_IT_Update) != RESET ) 
 	{	
 		fire_mode();
+//		
+		
 		TIM_ClearITPendingBit(FIRE_TIM , TIM_IT_Update);  		 
 	}		 	
 }

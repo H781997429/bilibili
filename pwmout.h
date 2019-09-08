@@ -29,7 +29,7 @@
 #define TIMY_IRQn			   TIM2_IRQn
 #define TIMY_IRQHandler        TIM2_IRQHandler
 
-
+#define Init_angle             50
 
 /*****************************************************/
 void PWM_Configuration(void);
