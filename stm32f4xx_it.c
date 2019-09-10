@@ -33,7 +33,9 @@
 #include "key.h"
 #include "mode.h"
 #include "relay.h"
+#include "bsp_adc.h"
 extern void TimingDelay_Decrement(void);
+extern __IO uint16_t ADC_ConvertedValue;
 
 /** @addtogroup Template_Project
   * @{
@@ -174,6 +176,19 @@ void  FIRE_TIM_IRQHandler (void)
 }
 
 
+
+// ADC 转换完成中断服务程序
+void ADC_IRQHandler(void)
+{
+	if(ADC_GetITStatus(RHEOSTAT_ADC,ADC_IT_EOC)==SET)
+	{
+  // 读取ADC的转换值
+		ADC_ConvertedValue = ADC_GetConversionValue(RHEOSTAT_ADC);
+
+	}
+	ADC_ClearITPendingBit(RHEOSTAT_ADC,ADC_IT_EOC);
+
+}	
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
